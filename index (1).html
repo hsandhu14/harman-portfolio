@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Harman Sandhu — Full Stack Developer & CS student at University of Washington">
+<title>Harman Sandhu — Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a26;
+    --accent1: #ff5c35;
+    --accent2: #ffcc00;
+    --accent3: #4af0c4;
+    --text: #f0ede8;
+    --muted: #8885a0;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.2rem;
+    color: var(--text);
+  }
+  .nav-logo span { color: var(--accent1); }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    font-size: 0.875rem; font-weight: 500;
+    color: var(--muted); text-decoration: none;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--text); border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
+    background: rgba(10,10,15,0.97); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); z-index: 99;
+    flex-direction: column; padding: 1.5rem 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 1rem; font-weight: 500; color: var(--muted);
+    text-decoration: none; padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--text); }
+
+  /* SECTIONS */
+  section { padding: 6rem 4rem; max-width: 1100px; margin: 0 auto; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 8rem;
+    position: relative;
+    max-width: 100%;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent3); font-weight: 500;
+    border: 1px solid rgba(74,240,196,0.25);
+    padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  }
+  .hero-name .line2 { color: var(--accent1); }
+
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); max-width: 520px;
+    line-height: 1.7; margin-top: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent1); color: #fff;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    font-size: 0.9rem; padding: 14px 28px; border-radius: 8px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,92,53,0.35); }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    font-size: 0.9rem; padding: 14px 28px; border-radius: 8px;
+    text-decoration: none; border: 1px solid var(--border); cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 4rem;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0; animation: fadeUp 0.7s 1.2s forwards;
+  }
+  .hero-scroll::before {
+    content: ''; display: block; width: 40px; height: 1px; background: var(--muted);
+  }
+
+  .hero-bg-num {
+    position: absolute; right: 3rem; top: 50%; transform: translateY(-50%);
+    font-family: 'Syne', sans-serif; font-size: 22vw; font-weight: 800;
+    color: rgba(255,255,255,0.015); user-select: none; pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent2); font-weight: 500;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 2.5rem;
+  }
+  .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--accent2); opacity: 0.4; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-heading {
+    font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.02em;
+  }
+  .about-heading em { color: var(--accent1); font-style: normal; }
+  .about-body { color: var(--muted); line-height: 1.8; margin-top: 1.5rem; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
+    color: var(--accent1);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+  .skill-pill {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0.75rem 1rem; text-align: center;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; font-size: 0.875rem; font-weight: 500;
+    transition: border-color 0.2s, transform 0.2s, color 0.2s;
+    cursor: default;
+  }
+  .skill-pill:hover { border-color: var(--accent3); color: var(--accent3); transform: translateY(-3px); }
+  .skill-pill.cat-1:hover { color: var(--accent1); border-color: var(--accent1); }
+  .skill-pill.cat-2:hover { color: var(--accent2); border-color: var(--accent2); }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: transform 0.25s, border-color 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .project-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.14); }
+  .project-card:hover::before { opacity: 1; }
+  .project-num {
+    font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800;
+    color: rgba(255,255,255,0.04); position: absolute; top: 1rem; right: 1.5rem;
+    line-height: 1;
+  }
+  .project-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(255,92,53,0.12); border: 1px solid rgba(255,92,53,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; margin-bottom: 1.25rem;
+  }
+  .project-icon.g { background: rgba(74,240,196,0.1); border-color: rgba(74,240,196,0.2); }
+  .project-icon.y { background: rgba(255,204,0,0.1); border-color: rgba(255,204,0,0.2); }
+  .project-title {
+    font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .project-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 1.25rem; }
+  .tag {
+    font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 6px;
+    background: rgba(255,255,255,0.05); color: var(--muted);
+  }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.72rem; font-weight: 500;
+    color: var(--accent3); letter-spacing: 0.05em;
+    padding: 3px 8px; border-radius: 6px;
+    background: rgba(74,240,196,0.1);
+    margin-top: 1rem;
+  }
+  .status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent3); animation: pulse 1.5s infinite; }
+  .project-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; }
+  .github-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.78rem; font-weight: 500; color: var(--muted);
+    text-decoration: none; padding: 6px 12px;
+    border: 1px solid var(--border); border-radius: 8px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .github-link:hover { color: var(--text); border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
+  .github-link svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .contact-heading {
+    font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.02em;
+  }
+  .contact-heading span { color: var(--accent1); }
+  .contact-body { color: var(--muted); line-height: 1.8; margin-top: 1rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+    text-decoration: none; color: var(--text);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent1); transform: translateX(6px); }
+  .contact-link-icon {
+    width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,92,53,0.12); font-size: 1.1rem;
+  }
+  .contact-link-text { font-weight: 500; font-size: 0.9rem; }
+  .contact-link-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 2rem;
+    font-size: 0.8rem; color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* DIVIDER */
+  .divider { max-width: 1100px; margin: 0 auto; border: none; border-top: 1px solid var(--border); }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .hero-inner { padding: 0 1.5rem; }
+    .hero-scroll { left: 1.5rem; }
+    .hero-bg-num { font-size: 40vw; opacity: 0.4; }
+
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-heading, .contact-heading { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HS<span>.</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+  <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg-num">HS</div>
+  <div class="hero-inner">
+    <div class="hero-tag">Available for internships</div>
+    <h1 class="hero-name">
+      <span class="line1">Harman</span><br>
+      <span class="line2">Sandhu.</span>
+    </h1>
+    <p class="hero-sub">
+      Full Stack Developer &amp; CS student at University of Washington. I build efficient, scalable software with a strong foundation in algorithms, data structures, and systems programming.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects →</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll to explore</div>
+</div>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label fade-in">About me</div>
+  <div class="about-grid fade-in">
+    <div>
+      <h2 class="about-heading">Building things that <em>matter</em></h2>
+      <p class="about-body">
+        I'm a Computer Science and Mathematics student at the University of Washington, with hands-on development experience from a software project internship and ICPC participation. I'm passionate about building scalable infrastructure for large-scale AI models and engineering software that solves real problems.
+      </p>
+      <p class="about-body" style="margin-top:1rem;">
+        Currently interning at Syntecxhub, where I develop applications using Python and Java, collaborate with remote teams, and optimize performance through data structures and algorithms.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">UW</div>
+        <div class="stat-label">BS Computer Science — Class of 2027</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Projects Built</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">ICPC</div>
+        <div class="stat-label">Competitive Programmer</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Years of Dev Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label fade-in">Skills &amp; Tech</div>
+  <div class="skills-grid fade-in">
+    <div class="skill-pill cat-1">Python</div>
+    <div class="skill-pill cat-1">Java</div>
+    <div class="skill-pill cat-1">C++</div>
+    <div class="skill-pill cat-1">JavaScript</div>
+    <div class="skill-pill cat-2">Node.js</div>
+    <div class="skill-pill cat-2">MIPS Assembly</div>
+    <div class="skill-pill">Algorithms</div>
+    <div class="skill-pill">Data Structures</div>
+    <div class="skill-pill">Systems Programming</div>
+    <div class="skill-pill">Unit Testing</div>
+    <div class="skill-pill">Team Collaboration</div>
+    <div class="skill-pill cat-2">SQL</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label fade-in">Projects</div>
+  <div class="projects-grid fade-in">
+
+    <div class="project-card">
+      <div class="project-num">01</div>
+      <div class="project-icon">🎮</div>
+      <div class="project-title">Trivia Maze Game</div>
+      <p class="project-desc">An interactive trivia-based maze game where players answer questions to navigate through levels. Combines game logic with engaging trivia mechanics.</p>
+      <div class="status-badge">In Progress</div>
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="tag">Java</span><span class="tag">Game Logic</span><span class="tag">OOP</span>
+        </div>
+        <a href="https://github.com/nferencko/TriviaMazeGame" target="_blank" rel="noopener" class="github-link">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">02</div>
+      <div class="project-icon g">🔐</div>
+      <div class="project-title">Cryptography (Python)</div>
+      <p class="project-desc">Custom encryption/decryption program applying core algorithms and data structures to shift characters based on user input and key selection.</p>
+      <div class="project-tags">
+        <span class="tag">Python</span><span class="tag">Algorithms</span><span class="tag">UW</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <div class="project-icon y">⚙️</div>
+      <div class="project-title">Cryptography (MIPS)</div>
+      <p class="project-desc">Complete encryption/decryption system in MIPS assembly with modular subroutines, syscalls for interactive prompts, and thorough input validation.</p>
+      <div class="project-tags">
+        <span class="tag">MIPS Assembly</span><span class="tag">Systems</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">04</div>
+      <div class="project-icon">📚</div>
+      <div class="project-title">Library Management System</div>
+      <p class="project-desc">Full-featured library management system to handle book catalogues, member records, borrowing, and returns with a clean structured interface.</p>
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="tag">Java</span><span class="tag">Data Structures</span>
+        </div>
+        <a href="https://github.com/hsandhu14/Library-Management-System" target="_blank" rel="noopener" class="github-link">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">05</div>
+      <div class="project-icon">🛒</div>
+      <div class="project-title">Online Shopping Cart</div>
+      <p class="project-desc">E-commerce shopping cart application with product listings, cart management, and order processing functionality built end-to-end.</p>
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="tag">JavaScript</span><span class="tag">Node.js</span><span class="tag">Full Stack</span>
+        </div>
+        <a href="https://github.com/hsandhu14/OnlineShoppingCart" target="_blank" rel="noopener" class="github-link">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">06</div>
+      <div class="project-icon g">🧾</div>
+      <div class="project-title">Inventory Billing System</div>
+      <p class="project-desc">Inventory and billing management system for tracking stock, processing transactions, and generating invoices with automated billing logic.</p>
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Backend</span>
+        </div>
+        <a href="https://github.com/hsandhu14/Inventory-Billing-System" target="_blank" rel="noopener" class="github-link">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label fade-in">Contact</div>
+  <div class="contact-inner fade-in">
+    <div>
+      <h2 class="contact-heading">Let's build something <span>great</span> together</h2>
+      <p class="contact-body">I'm actively seeking internship opportunities in software engineering and AI infrastructure. Feel free to reach out!</p>
+    </div>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/harman-sandhu-44147b292" target="_blank" rel="noopener" class="contact-link">
+        <div class="contact-link-icon">💼</div>
+        <div>
+          <div class="contact-link-text">LinkedIn</div>
+          <div class="contact-link-sub">linkedin.com/in/harman-sandhu-44147b292</div>
+        </div>
+      </a>
+      <a href="mailto:hsandhu1@uw.edu" class="contact-link">
+        <div class="contact-link-icon">✉️</div>
+        <div>
+          <div class="contact-link-text">Email</div>
+          <div class="contact-link-sub">hsandhu1@uw.edu</div>
+        </div>
+      </a>
+      <a href="https://github.com/hsandhu14" target="_blank" rel="noopener" class="contact-link">
+        <div class="contact-link-icon" style="background:rgba(255,255,255,0.06); font-size:0.95rem; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;fill:var(--text);"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        </div>
+        <div>
+          <div class="contact-link-text">GitHub</div>
+          <div class="contact-link-sub">github.com/hsandhu14</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed &amp; built by Harman Sandhu — 2026</p>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+</script>
+
+</body>
+</html>
